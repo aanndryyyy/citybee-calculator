@@ -40,17 +40,28 @@
   }
 
   function get_discount_total( theTotalMinutes: number, car: CarInterface ) {
-
+    
     return get_duration_price( theTotalMinutes, car ) - totalMinutes*car.price.minute;
   }
-
+  
   function get_formatted_duration( theTotalMinutes: number ) {
-
+    
     const { days, hours, minutes } = breakdown_minutes( theTotalMinutes );
-
+    
     return days + " days, " + hours + " hours, " + minutes + " minutes";
   }
 
+  function getCarTotal( theTotalMinutes: number, car: CarInterface ) {
+    
+    let total = get_duration_price(theTotalMinutes, car) + totalKilometres*car.price.km;
+
+    if ( total <= 1.89 ) {
+      return 1.89;
+    }
+
+    return total + 0.5;
+  }
+  
   $: formattedDuration = get_formatted_duration( totalMinutes );
   $: sortedCars = cars.sort( function( a, b ) {
     var firstPer = get_duration_price( totalMinutes, a ) + totalKilometres*a.price.km
@@ -103,7 +114,7 @@
         </div>
 
         <div class="text-2xl font-bold text-right" class:text-orange-600={i === 0}>
-          {(get_duration_price(totalMinutes, car) + totalKilometres*car.price.km).toFixed(2)} &euro;
+          {getCarTotal( totalMinutes, car ).toFixed(2)} &euro;
           <span class="block text-xs font-normal text-blue-600" title="Long-term rent discount">{get_discount_total(totalMinutes, car).toFixed(0)}&euro;</span>
         </div>
       </div>
