@@ -1,5 +1,37 @@
 # Calculator for CityBee
 
+## Updating prices
+Use the following script to get pricess from CityBee pricing page https://citybee.ee/ee/hinnad/.
+
+```js
+var select = document.querySelector('[name="cars"]');
+var option = select.firstChild;
+var output = [];
+
+while ( option ) {
+
+  if ( option.nodeType !== 1 || option === select ) {
+    option = option.nextSibling;
+    continue;
+  }
+  
+  output.push({
+    name: option.label,
+    type: option.dataset.category,
+    price: {
+      km: parseFloat( option.dataset.km ),
+      minute: parseFloat( option.dataset.min ),
+      hour: parseFloat( option.dataset.hour ),
+      day: parseFloat( option.dataset.day ),
+    }
+  });
+        
+  option = option.nextSibling;
+}
+
+copy(output);
+```
+
 ## Note to self
 CityBee pricing logic from their website https://citybee.ee (https://citybee.ee/wp-content/themes/citybee/resources/scripts/app.js).
 
