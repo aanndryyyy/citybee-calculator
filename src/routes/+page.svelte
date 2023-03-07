@@ -8,6 +8,8 @@
   import cars from "../cars";
   import type { Car as CarInterface } from '../Car';
 	
+	const startingFee: number   = 0.5;
+	const minimumPrice: number  = 1.89;
 	let totalMinutes: number    = 60;
 	let totalKilometres: number = 30;
 
@@ -55,11 +57,11 @@
     
     let total = get_duration_price(theTotalMinutes, car) + totalKilometres*car.price.km;
 
-    if ( total <= 1.89 ) {
-      return 1.89;
+    if ( total <= minimumPrice ) {
+      return minimumPrice;
     }
 
-    return total + 0.5;
+    return total + startingFee;
   }
   
   $: formattedDuration = get_formatted_duration( totalMinutes );
